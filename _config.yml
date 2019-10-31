@@ -1,0 +1,13 @@
+title: Mixtape
+description: ""
+url: https://mixtape.recurse.com
+plugins:
+  - jekyll-seo-tag
+exclude:
+  - Gemfile*
+collections:
+  mixtapes:   { "output": true, "permalink": "/:path" }
+defaults:
+  -
+    scope:  { "path": "", "type": "mixtapes" }
+    values: { "layout": "mixtape" }
