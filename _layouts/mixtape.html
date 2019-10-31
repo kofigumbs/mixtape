@@ -4,16 +4,38 @@
 <html lang="en">
 <head>{% include head.html %}</head>
 <body>
-  <h1>{% include title.html page=page %}</h1>
-  {% for track in page.tracks %}
-  <iframe
-    width="100%"
-    height="166"
-    scrolling="no"
-    frameborder="no"
-    allow="autoplay"
-    src="https://w.soundcloud.com/player/?url={{ track.link }}&amp;"></iframe>
-  {% endfor %}
-  <script src="https://w.soundcloud.com/player/api.js"></script>
+  <main>
+    <h1>{% include title.html page=page %}</h1>
+    <ol>
+    {% for track in page.tracks %}
+    <li data-track="{{ track.link }}"><a href="{{ track.link }}">{{ track.title }}</a></li>
+    {% endfor %}
+    </ol>
+    <div data-container style="width:100%"></div>
+  </main>
+
+  <script>
+    var container  = document.querySelector("[data-container]");
+    document.querySelectorAll("[data-track]").forEach(setup);
+
+    function setup(el) {
+      if (el.dataset.track.match(/youtube.com/)) {
+        frame(390, el.dataset.track);
+      } else if (el.dataset.track.match(/soundcloud.com/)) {
+        frame(166, "https://w.soundcloud.com/player/?url=" + el.dataset.track + "");
+      }
+    }
+
+    function frame(height, src) {
+      var el = document.createElement("iframe");
+      el.src = src;
+      el.setAttribute("height", height);
+      el.setAttribute("width", "100%");
+      el.setAttribute("scrolling", "no");
+      el.setAttribute("frameborder", "no");
+      el.setAttribute("allow", "autoplay");
+      container.appendChild(el);
+    }
+  </script>
 </body>
 </html>

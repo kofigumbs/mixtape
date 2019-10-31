@@ -4,9 +4,11 @@
 <html lang="en">
 <head>{% include head.html %}</head>
 <body>
+<main>
 <h1>Index of /</h1>
 {% for mixtape in site.mixtapes %}
 <h2><a href="{{ mixtape.id }}">{% include title.html page=mixtape %}</a></h2>
 {% endfor %}
+</main>
 </body>
 </html>
