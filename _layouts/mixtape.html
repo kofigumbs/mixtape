@@ -8,10 +8,19 @@
     <h1>{% include title.html page=page %}</h1>
     <ol>
     {% for track in page.tracks %}
-    <li data-track="{{ track.link }}"><a href="{{ track.link }}">{{ track.title }}</a></li>
+    <li data-track="{{ track.link }}">
+      {{ track.title }}
+      <a href="{{ track.link }}" title="External link" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+    </li>
     {% endfor %}
     </ol>
-    <button data-play>▶ Play All</button>
+    <div>
+      <button data-play class="play">Play All</button>
+      &nbsp;
+      <a href="https://github.com/hkgumbs/mixtape/edit/master/{{ page.path }}" target="_blank">Submit Your Track</a>
+    </div>
   </main>
 
   <div data-container></div>
@@ -23,16 +32,21 @@
 
     var current = -1;
     var container = document.querySelector("[data-container]");
-    var tracks = document.querySelectorAll("[data-track]");
-    document.querySelector("[data-play]").addEventListener("click", start);
+    var play      = document.querySelector("[data-play]")
+    var tracks    = document.querySelectorAll("[data-track]");
+
+    play.addEventListener("click", start);
 
     function start() {
       current++;
       container.innerHTML = "";
+      play.innerText = "Play Next";
+      tracks.forEach(function(el) { el.classList.remove("active") });
 
       var match;
       var el = tracks[current % tracks.length];
       var trackUrl = el.dataset.track;
+      el.classList.add("active");
 
       if (match = trackUrl.match(SOUNDCLOUD_REGEX)) {
         setupSoundcloud(trackUrl);
@@ -72,7 +86,7 @@
         }
       });
 
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
     }
   </script>
 </body>
