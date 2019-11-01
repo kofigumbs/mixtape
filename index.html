@@ -5,10 +5,13 @@
 <head>{% include head.html %}</head>
 <body>
 <main>
-<h1>Index of /</h1>
+<h1>Mixtape</h1>
+{% include citation.html %}
+<ul>
 {% for mixtape in site.mixtapes %}
-<h2><a href="{{ mixtape.id }}">{% include title.html page=mixtape %}</a></h2>
+<li><a href="{{ mixtape.id }}">{% include title.html page=mixtape %}</a></li>
 {% endfor %}
+</ul>
 </main>
 </body>
 </html>

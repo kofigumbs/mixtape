@@ -1,10 +1,9 @@
-title: Mixtape
-description: ""
+title: RC Mixtape
 url: https://mixtape.recurse.com
 plugins:
   - jekyll-seo-tag
-exclude:
-  - Gemfile*
+exclude: [ "Gemfile*" ]
+include: [ "_redirects" ]
 collections:
   mixtapes:   { "output": true, "permalink": "/:path" }
 defaults:
