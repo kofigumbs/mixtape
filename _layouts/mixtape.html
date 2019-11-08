@@ -16,7 +16,11 @@
     {% endfor %}
     </ol>
     <div>
+      {% if page.tracks %}
       <button data-play class="play">Play All</button>
+      {% else %}
+      <i>No tracks yet</i>
+      {% endif %}
       &nbsp;
       <a href="https://github.com/hkgumbs/mixtape/edit/master/{{ page.path }}" target="_blank">Submit Your Track</a>
     </div>
