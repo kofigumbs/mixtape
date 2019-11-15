@@ -68,6 +68,7 @@ empty: []
       el.setAttribute("frameborder", "no");
       el.setAttribute("allow", "autoplay");
       container.appendChild(el);
+      SC.Widget(el).bind(SC.Widget.Events.ERROR, start);
       SC.Widget(el).bind(SC.Widget.Events.FINISH, start);
     }
 
@@ -81,12 +82,9 @@ empty: []
         width: window.innerWidth,
         videoId: videoId,
         events: {
-          "onReady": function(event) {
-            event.target.playVideo()
-          },
-          "onStateChange": function(event) {
-            if (event.data == YT.PlayerState.ENDED) start();
-          }
+          "onReady": function(event) { event.target.playVideo() },
+          "onError": function(event) { start() },
+          "onStateChange": function(event) { if (event.data == YT.PlayerState.ENDED) start() }
         }
       });
 
