@@ -6,11 +6,11 @@
 title: Example Mixtape
 tracks:
   - title: Example on Soundcloud
-    link: https://soundcloud.com/good/track
+    link: https://soundcloud.com/username/track
   - title: Example on YouTube
     link: https://youtube.com/watch?v=track
   - title: Example on Twitter
-    link: https://twitter.com/handle/tweet-with-video
+    link: https://twitter.com/username/tweet-with-video
 ```
 
 ### Run locally
