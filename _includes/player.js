@@ -1,10 +1,11 @@
-var SOUNDCLOUD_REGEX = /soundcloud\.com/;
-var YOUTUBE_REGEX = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+const SOUNDCLOUD_REGEX = /soundcloud\.com/;
+const TWITTER_REGEX = /twitter\.com\/.+\/status\/(\d+)/;
+const YOUTUBE_REGEX = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
-var current = -1;
-var container = document.querySelector("[data-container]");
-var play      = document.querySelector("[data-play]")
-var tracks    = document.querySelectorAll("[data-track]");
+let current = -1;
+const container = document.querySelector("[data-container]");
+const play      = document.querySelector("[data-play]")
+const tracks    = document.querySelectorAll("[data-track]");
 
 play.addEventListener("click", start);
 
@@ -14,20 +15,22 @@ function start() {
   play.innerText = "Play Next";
   tracks.forEach(function(el) { el.classList.remove("active") });
 
-  var match;
-  var el = tracks[current % tracks.length];
-  var trackUrl = el.dataset.track;
+  let match;
+  const el = tracks[current % tracks.length];
+  const trackUrl = el.dataset.track;
   el.classList.add("active");
 
-  if (match = trackUrl.match(SOUNDCLOUD_REGEX)) {
+  if (trackUrl.match(SOUNDCLOUD_REGEX)) {
     setupSoundcloud(trackUrl);
+  } else if (match = trackUrl.match(TWITTER_REGEX)) {
+    setupTwitter(match[1]);
   } else if (match = trackUrl.match(YOUTUBE_REGEX)) {
     setupYoutube(match[2]);
   }
 }
 
 function setupSoundcloud(url) {
-  var el = document.createElement("iframe");
+  const el = document.createElement("iframe");
   el.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) + "&auto_play=true";
   el.setAttribute("height", 166);
   el.setAttribute("width", "100%");
@@ -39,8 +42,35 @@ function setupSoundcloud(url) {
   SC.Widget(el).bind(SC.Widget.Events.FINISH, start);
 }
 
+function setupTwitter(tweetId) {
+  Promise.all([
+    twttr.widgets.createTweet(tweetId, container, { align: "center" }),
+    get("https://kofi.sexy/.netlify/functions/embed-twitter-video?tweet=" + tweetId),
+  ]).then(function(arguments) {
+    const card = arguments[0].shadowRoot.querySelector(".MediaCard");
+    card.innerHTML = "";
+
+    const source = document.createElement("source");
+    source.type = "video/mp4";
+    source.src = arguments[1];
+
+    const player = document.createElement("video");
+    player.autoplay = true;
+    player.controls = true;
+    player.style.width = "100%";
+    player.style.borderRadius = "4px";
+    player.appendChild(source);
+    card.appendChild(player);
+
+    return new Promise(function(resolve, reject) {
+      player.addEventListener("ended", resolve);
+      player.addEventListener("error", reject);
+    });
+  }).finally(start);
+}
+
 function setupYoutube(videoId) {
-  var player = document.createElement("div");
+  const player = document.createElement("div");
   player.id = "player";
   container.appendChild(player);
 
@@ -56,4 +86,16 @@ function setupYoutube(videoId) {
   });
 
   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+}
+
+function get(url) {
+  return new Promise(function(resolve, reject) {
+    const request = new XMLHttpRequest();
+    request.addEventListener("load", function() {
+      this.status === 200 ? resolve(this.responseText) : reject(this.responseText);
+    });
+    request.addEventListener("error", reject);
+    request.open("GET", url);
+    request.send();
+  });
 }

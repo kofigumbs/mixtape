@@ -3,12 +3,14 @@
 ### Formatting
 
 ```yaml
-title: Mixtape About Nothing
+title: Example Mixtape
 tracks:
-  - title: The first one
+  - title: Example on Soundcloud
     link: https://soundcloud.com/good/track
-  - title: Another one
+  - title: Example on YouTube
     link: https://youtube.com/watch?v=track
+  - title: Example on Twitter
+    link: https://twitter.com/handle/tweet-with-video
 ```
 
 ### Run locally
