@@ -46,16 +46,16 @@ function setupTwitter(tweetId) {
   // ATTEMPT 1. Use official Twitter JS library,
   // but no methods/listeners provided to observe listening state.
   //
-  // twttr.widgets.createTweet(tweetId, container).then(function() {
-  //   document
-  //     .querySelector("twitter-widget").shadowRoot
-  //     .querySelector("[aria-label='Play Media']").click();
-  //   return new Promise(function(resolve, reject) {
-  //     window.addEventListener("message", function(event) { console.log(event) }, true);
-  //     // video.addEventListener("ended", resolve);
-  //     // video.addEventListener("error", reject);
-  //   });
-  // }).finally(start);
+  twttr.widgets.createTweet(tweetId, container).then(function() {
+    document
+      .querySelector("twitter-widget").shadowRoot
+      .querySelector("[aria-label='Play Media']").click();
+    return new Promise(function(resolve, reject) {
+      window.addEventListener("message", function(event) { console.log(event) }, true);
+      // video.addEventListener("ended", resolve);
+      // video.addEventListener("error", reject);
+    });
+  }).finally(start);
 
   // ATTEMPT 2. Create iframe (like with SoundCloud),
   // but CORS only allows me to listen to messages that are explicitly posted.
@@ -83,9 +83,6 @@ function setupTwitter(tweetId) {
   //
   // container.innerHTML = `
   //   <video autoplay preload="none" playsinline="" poster="https://pbs.twimg.com/ext_tw_video_thumb/1195154006584233984/pu/img/R6qTSr--6Ol_741H.jpg" src="https://twitter.com/d6d49839-7d93-4a40-b99f-d14abb451648" style="width: 100%; height: 100%; position: absolute; background-color: black; transform: rotate(0deg) scale(1.005);"></video>
-  //   1195154006584233984
-  //   1195154216454635521
-  // `;
 }
 
 function setupYoutube(videoId) {
