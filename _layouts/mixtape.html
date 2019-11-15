@@ -82,9 +82,9 @@ empty: []
         width: window.innerWidth,
         videoId: videoId,
         events: {
-          "onReady": function(event) { event.target.playVideo() },
-          "onError": function(event) { start() },
-          "onStateChange": function(event) { if (event.data == YT.PlayerState.ENDED) start() }
+          onReady: function(event) { event.target.playVideo() },
+          onError: function(event) { start() },
+          onStateChange: function(event) { if (event.data == YT.PlayerState.ENDED) start() },
         }
       });
 
