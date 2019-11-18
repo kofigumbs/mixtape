@@ -10,7 +10,12 @@ empty: []
     {% include citation.html %}
     <ol>
     {% for track in page.tracks %}
-    <li data-track="{{ track.link }}">
+    <li {% if track.embed %} 
+      data-track="{{ track.embed }}"
+      {% else %}
+      data-track="{{ track.link }}"
+      {% endif %}
+    >
       {{ track.title }}
       <a href="{{ track.link }}" title="External link" target="_blank">{% include external.svg %}</a>
     </li>
