@@ -31,15 +31,18 @@ function start() {
 
 function setupSoundcloud(url) {
   const el = document.createElement("iframe");
-  el.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) + "&auto_play=true";
+  el.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
   el.setAttribute("height", 166);
   el.setAttribute("width", "100%");
   el.setAttribute("scrolling", "no");
   el.setAttribute("frameborder", "no");
   el.setAttribute("allow", "autoplay");
+
+  const widget = SC.Widget(el);
+  widget.bind(SC.Widget.Events.ERROR, start);
+  widget.bind(SC.Widget.Events.FINISH, start);
+  widget.bind(SC.Widget.Events.READY, function() { widget.play() });
   container.appendChild(el);
-  SC.Widget(el).bind(SC.Widget.Events.ERROR, start);
-  SC.Widget(el).bind(SC.Widget.Events.FINISH, start);
 }
 
 function setupTwitter(tweetId) {
